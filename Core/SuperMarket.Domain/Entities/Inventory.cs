@@ -8,6 +8,6 @@ namespace SuperMarket.Domain.Entities
 {
     public class Inventory
     {
-
+        //.
     }
 }
