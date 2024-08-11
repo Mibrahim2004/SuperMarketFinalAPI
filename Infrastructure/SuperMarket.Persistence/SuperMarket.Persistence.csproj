@@ -13,7 +13,6 @@
   <ItemGroup>
     <Folder Include="Configurations\EntityConfig\" />
     <Folder Include="Extensions\" />
-    <Folder Include="Implementations\Services\" />
   </ItemGroup>
 
   <ItemGroup>

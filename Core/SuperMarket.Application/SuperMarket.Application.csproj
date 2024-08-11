@@ -11,15 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\CustomerDTOs\" />
-    <Folder Include="DTOs\BranchDTOs\" />
-    <Folder Include="DTOs\CategoryDTOs\" />
-    <Folder Include="DTOs\InventoryDTOs\" />
-    <Folder Include="DTOs\PaymentDTOs\" />
-    <Folder Include="DTOs\ProductDTOs\" />
-    <Folder Include="DTOs\OrderDetailsDTOs\" />
-    <Folder Include="DTOs\OrderDTOs\" />
-    <Folder Include="Interfaces\IServices\" />
     <Folder Include="Validations\" />
   </ItemGroup>
 

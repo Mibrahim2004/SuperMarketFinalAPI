@@ -1,16 +1,16 @@
-﻿using SuperMarket.Domain.Entities.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SuperMarket.Domain.Entities
+namespace SuperMarket.Application.DTOs.OrderDTOs
 {
-    public class Order : BaseEntity
+    public class OrderGetDTO
     {
+        public int Id { get; set; }
         public int CustomerId { get; set; }
         public DateTime OrderDate { get; set; }
-        public int TotalAmount {  get; set; }
+        public int TotalAmount { get; set; }
     }
 }
