@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SuperMarket.Application.DTOs.CustomerDTOs;
+using SuperMarket.Application.DTOs.OrderDTOs;
 using SuperMarket.Application.Interfaces.IServices;
 using SuperMarket.Application.Interfaces.IUnitOfWorks;
 using SuperMarket.Application.Models;
 using SuperMarket.Domain.Entities;
-using SuperMarket.Persistence.Implementations.UnitOfWorks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,29 +14,29 @@ using System.Threading.Tasks;
 
 namespace SuperMarket.Persistence.Implementations.Services
 {
-    public class CustomerService : ICustomerService
+    public class OrderService : IOrderService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public CustomerService(IMapper mapper, IUnitOfWork unitOfWork)
+        public OrderService(IMapper mapper, IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<ResponseModel<CustomerCreateDTO>> CreateCustomer(CustomerCreateDTO customerCreateDTO)
+        public async Task<ResponseModel<OrderCreateDTO>> CreateOrder(OrderCreateDTO orderCreateDTO)
         {
-            ResponseModel<CustomerCreateDTO> responseModel = new ResponseModel<CustomerCreateDTO>() { Data = null, Status = 400 };
+            ResponseModel<OrderCreateDTO> responseModel = new ResponseModel<OrderCreateDTO>() { Data = null, Status = 400 };
 
             try
             {
-                if (customerCreateDTO != null)
+                if (orderCreateDTO != null)
                 {
-                    var data = _mapper.Map<Customer>(customerCreateDTO);
-                    await _unitOfWork.GetRepository<Customer>().AddAsync(data);
+                    var data = _mapper.Map<Order>(orderCreateDTO);
+                    await _unitOfWork.GetRepository<Order>().AddAsync(data);
                     int rowsAffected = await _unitOfWork.SaveChangesAsync();
                     if (rowsAffected > 0)
                     {
-                        responseModel.Data = customerCreateDTO;
+                        responseModel.Data = orderCreateDTO;
                         responseModel.Status = 201;
                     }
                     else
@@ -52,15 +52,15 @@ namespace SuperMarket.Persistence.Implementations.Services
             return responseModel;
         }
 
-        public async Task<ResponseModel<bool>> DeleteCustomer(int id)
+        public async Task<ResponseModel<bool>> DeleteOrder(int id)
         {
             ResponseModel<bool> responseModel = new ResponseModel<bool>() { Data = false, Status = 500 };
             try
             {
-                var data = await _unitOfWork.GetRepository<Customer>().GetByIDAsync(id);
+                var data = await _unitOfWork.GetRepository<Order>().GetByIDAsync(id);
                 if (data != null)
                 {
-                    _unitOfWork.GetRepository<Customer>().Remove(data);
+                    _unitOfWork.GetRepository<Order>().Remove(data);
                     int rowsAffected = await _unitOfWork.SaveChangesAsync();
                     if (rowsAffected > 0)
                     {
@@ -82,14 +82,14 @@ namespace SuperMarket.Persistence.Implementations.Services
             return responseModel;
         }
 
-        public async Task<ResponseModel<List<CustomerGetDTO>>> GetAllCustomers()
+        public async Task<ResponseModel<List<OrderGetDTO>>> GetAllOrders()
         {
-            ResponseModel<List<CustomerGetDTO>> responseModel = new ResponseModel<List<CustomerGetDTO>>() { Data = null, Status = 500 };
+            ResponseModel<List<OrderGetDTO>> responseModel = new ResponseModel<List<OrderGetDTO>>() { Data = null, Status = 500 };
             try
             {
-                var customers = await _unitOfWork.GetRepository<Customer>().GetAll().ToListAsync();//???
-                var customerDTOs = _mapper.Map<List<CustomerGetDTO>>(customers);
-                responseModel.Data = customerDTOs;
+                var orders = await _unitOfWork.GetRepository<Order>().GetAll().ToListAsync();//???
+                var orderDTOs = _mapper.Map<List<OrderGetDTO>>(orders);
+                responseModel.Data = orderDTOs;
                 responseModel.Status = 200;
             }
             catch (Exception ex)
@@ -99,20 +99,20 @@ namespace SuperMarket.Persistence.Implementations.Services
             }
             return responseModel;
         }
-        public async Task<ResponseModel<CustomerGetDTO>> GetCustomerById(int id)
+        public async Task<ResponseModel<OrderGetDTO>> GetOrderById(int id)
         {
-            ResponseModel<CustomerGetDTO> responseModel = new ResponseModel<CustomerGetDTO>()
+            ResponseModel<OrderGetDTO> responseModel = new ResponseModel<OrderGetDTO>()
             {
                 Data = null,
                 Status = 400
             };
             try
             {
-                var data = await _unitOfWork.GetRepository<Customer>().GetByIDAsync(id);
+                var data = await _unitOfWork.GetRepository<Order>().GetByIDAsync(id);
                 if (data != null)
                 {
-                    var customerDTOs = _mapper.Map<CustomerGetDTO>(data);
-                    responseModel.Data = customerDTOs;
+                    var orderDTOs = _mapper.Map<OrderGetDTO>(data);
+                    responseModel.Data = orderDTOs;
                     responseModel.Status = 200;
                 }
                 else
@@ -126,15 +126,15 @@ namespace SuperMarket.Persistence.Implementations.Services
             }
             return responseModel;
         }
-            public async Task<ResponseModel<bool>> UpdateCustomer(CustomerUpdateDTO customerUpdateDTO, int id)
+        public async Task<ResponseModel<bool>> UpdateOrder(OrderUpdateDTO orderUpdateDTO, int id)
         {
             ResponseModel<bool> responseModel = new ResponseModel<bool>() { Data = false, Status = 500 };
             try
             {
-                var data = await _unitOfWork.GetRepository<Customer>().GetByIDAsync(id);
+                var data = await _unitOfWork.GetRepository<Order>().GetByIDAsync(id);
                 if (data != null)
                 {
-                    var customer = _mapper.Map(customerUpdateDTO, data);
+                    var order = _mapper.Map(orderUpdateDTO, data);
                     int rowsAffected = await _unitOfWork.SaveChangesAsync();
                     if (rowsAffected > 0)
                     {
