@@ -1,5 +1,4 @@
-﻿using SuperMarket.Application.DTOs.CustomerDTOs;
-using SuperMarket.Application.DTOs.OrderDTOs;
+﻿using SuperMarket.Application.DTOs.OrderDTOs;
 using SuperMarket.Application.Models;
 using System;
 using System.Collections.Generic;
