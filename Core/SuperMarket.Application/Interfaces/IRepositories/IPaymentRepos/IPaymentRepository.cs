@@ -9,6 +9,6 @@ namespace SuperMarket.Application.Interfaces.IRepositories.IPaymentRepos
 {
     public interface IPaymentRepository : IRepository<Payment>
     {
-
+     
     }
 }

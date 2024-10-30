@@ -10,5 +10,6 @@ namespace SuperMarket.Domain.Entities
     public class Category : BaseEntity
     {
         public string Name {  get; set; }
+        public IList<Product>? Product { get; set; }
     }
 }

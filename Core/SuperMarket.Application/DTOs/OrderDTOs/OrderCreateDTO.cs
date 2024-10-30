@@ -9,6 +9,7 @@ namespace SuperMarket.Application.DTOs.OrderDTOs
    public class OrderCreateDTO
     {
         public int CustomerId { get; set; }
+        public int ProductId {  get; set; }
         public DateTime OrderDate { get; set; }
         public int TotalAmount { get; set; }
     }

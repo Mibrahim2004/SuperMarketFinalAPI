@@ -12,5 +12,6 @@ namespace SuperMarket.Domain.Entities
         public int ProductId {  get; set; }
         public int BranchId {  get; set; }
         public int Quantity {  get; set; }
+        public Branch Branch { get; set; }
     }
 }

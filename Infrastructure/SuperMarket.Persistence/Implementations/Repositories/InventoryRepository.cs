@@ -1,5 +1,4 @@
 ﻿using SuperMarket.Application.Interfaces.IRepositories.IInventoryRepos;
-using SuperMarket.Application.Interfaces.IRepositories.IOrderRepos;
 using SuperMarket.Domain.Entities;
 using SuperMarket.Persistence.Contexts;
 using System;
@@ -14,7 +13,7 @@ namespace SuperMarket.Persistence.Implementations.Repositories
     {
         public InventoryRepository(ApplicationDbContext appDbContext) : base(appDbContext)
         {
-                
+
         }
     }
 }

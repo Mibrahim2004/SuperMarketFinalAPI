@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SuperMarket.Application.DTOs.CategoryDTOs;
+using SuperMarket.Application.Interfaces.IServices;
 using SuperMarket.Application.Interfaces.IUnitOfWorks;
 using SuperMarket.Application.Models;
 using SuperMarket.Domain.Entities;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace SuperMarket.Persistence.Implementations.Services
 {
-    public class CategoryService
+    public class CategoryService : ICategoryService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -23,7 +24,7 @@ namespace SuperMarket.Persistence.Implementations.Services
         }
         public async Task<ResponseModel<CategoryCreateDTO>> CreateCategory(CategoryCreateDTO categoryCreateDTO)
         {
-            ResponseModel<CategoryCreateDTO> responseModel = new ResponseModel<CategoryCreateDTO>() { Data = null, Status = 400 };
+            ResponseModel<CategoryCreateDTO> responseModel = new ResponseModel<CategoryCreateDTO>() { Data = null, StatusCode = 400 };
 
             try
             {
@@ -35,24 +36,24 @@ namespace SuperMarket.Persistence.Implementations.Services
                     if (rowsAffected > 0)
                     {
                         responseModel.Data = categoryCreateDTO;
-                        responseModel.Status = 201;
+                        responseModel.StatusCode = 201;
                     }
                     else
                     {
-                        responseModel.Status = 500;
+                        responseModel.StatusCode = 500;
                     }
                 }
             }
             catch (Exception ex)
             {
-                responseModel.Status = 500;
+                responseModel.StatusCode = 500;
             }
             return responseModel;
         }
 
         public async Task<ResponseModel<bool>> DeleteCategory(int id)
         {
-            ResponseModel<bool> responseModel = new ResponseModel<bool>() { Data = false, Status = 500 };
+            ResponseModel<bool> responseModel = new ResponseModel<bool>() { Data = false, StatusCode = 500 };
             try
             {
                 var data = await _unitOfWork.GetRepository<Category>().GetByIDAsync(id);
@@ -63,37 +64,37 @@ namespace SuperMarket.Persistence.Implementations.Services
                     if (rowsAffected > 0)
                     {
                         responseModel.Data = true;
-                        responseModel.Status = 200;
+                        responseModel.StatusCode = 200;
                     }
                 }
                 else
                 {
-                    responseModel.Status = 400;
+                    responseModel.StatusCode = 400;
                 }
             }
             catch (Exception ex)
             {
 
                 responseModel.Data = false;
-                responseModel.Status = 500;
+                responseModel.StatusCode = 500;
             }
             return responseModel;
         }
 
         public async Task<ResponseModel<List<CategoryGetDTO>>> GetAllCategories()
         {
-            ResponseModel<List<CategoryGetDTO>> responseModel = new ResponseModel<List<CategoryGetDTO>>() { Data = null, Status = 500 };
+            ResponseModel<List<CategoryGetDTO>> responseModel = new ResponseModel<List<CategoryGetDTO>>() { Data = null, StatusCode = 500 };
             try
             {
                 var categories = await _unitOfWork.GetRepository<Category>().GetAll().ToListAsync();
                 var categoryDTOs = _mapper.Map<List<CategoryGetDTO>>(categories);
                 responseModel.Data = categoryDTOs;
-                responseModel.Status = 200;
+                responseModel.StatusCode = 200;
             }
             catch (Exception ex)
             {
                 responseModel.Data = null;
-                responseModel.Status = 500;
+                responseModel.StatusCode = 500;
             }
             return responseModel;
         }
@@ -102,7 +103,7 @@ namespace SuperMarket.Persistence.Implementations.Services
             ResponseModel<CategoryGetDTO> responseModel = new ResponseModel<CategoryGetDTO>()
             {
                 Data = null,
-                Status = 400
+                StatusCode = 400
             };
             try
             {
@@ -111,22 +112,22 @@ namespace SuperMarket.Persistence.Implementations.Services
                 {
                     var categoryDTOs = _mapper.Map<CategoryGetDTO>(data);
                     responseModel.Data = categoryDTOs;
-                    responseModel.Status = 200;
+                    responseModel.StatusCode = 200;
                 }
                 else
                 {
-                    responseModel.Status = 500;
+                    responseModel.StatusCode = 500;
                 }
             }
             catch
             {
-                responseModel.Status = 500;
+                responseModel.StatusCode = 500;
             }
             return responseModel;
         }
         public async Task<ResponseModel<bool>> UpdateCategory(CategoryUpdateDTO categoryUpdateDTO, int id)
         {
-            ResponseModel<bool> responseModel = new ResponseModel<bool>() { Data = false, Status = 500 };
+            ResponseModel<bool> responseModel = new ResponseModel<bool>() { Data = false, StatusCode = 500 };
             try
             {
                 var data = await _unitOfWork.GetRepository<Category>().GetByIDAsync(id);
@@ -137,19 +138,19 @@ namespace SuperMarket.Persistence.Implementations.Services
                     if (rowsAffected > 0)
                     {
                         responseModel.Data = true;
-                        responseModel.Status = 200;
+                        responseModel.StatusCode = 200;
                     }
                 }
                 else
                 {
-                    responseModel.Status = 400;
+                    responseModel.StatusCode = 400;
                 }
             }
             catch (Exception ex)
             {
 
                 responseModel.Data = false;
-                responseModel.Status = 500;
+                responseModel.StatusCode = 500;
             }
             return responseModel;
         }

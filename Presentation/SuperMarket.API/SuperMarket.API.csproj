@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\SuperMarket.Application\SuperMarket.Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\SuperMarket.Infrastructure\SuperMarket.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\SuperMarket.Persistence\SuperMarket.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

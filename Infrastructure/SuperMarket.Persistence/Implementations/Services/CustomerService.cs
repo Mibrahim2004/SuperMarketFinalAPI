@@ -25,7 +25,7 @@ namespace SuperMarket.Persistence.Implementations.Services
         }
         public async Task<ResponseModel<CustomerCreateDTO>> CreateCustomer(CustomerCreateDTO customerCreateDTO)
         {
-            ResponseModel<CustomerCreateDTO> responseModel = new ResponseModel<CustomerCreateDTO>() { Data = null, Status = 400 };
+            ResponseModel<CustomerCreateDTO> responseModel = new ResponseModel<CustomerCreateDTO>() { Data = null, StatusCode = 400 };
 
             try
             {
@@ -37,24 +37,24 @@ namespace SuperMarket.Persistence.Implementations.Services
                     if (rowsAffected > 0)
                     {
                         responseModel.Data = customerCreateDTO;
-                        responseModel.Status = 201;
+                        responseModel.StatusCode = 201;
                     }
                     else
                     {
-                        responseModel.Status = 500;
+                        responseModel.StatusCode = 500;
                     }
                 }
             }
             catch (Exception ex)
             {
-                responseModel.Status = 500;
+                responseModel.StatusCode = 500;
             }
             return responseModel;
         }
 
         public async Task<ResponseModel<bool>> DeleteCustomer(int id)
         {
-            ResponseModel<bool> responseModel = new ResponseModel<bool>() { Data = false, Status = 500 };
+            ResponseModel<bool> responseModel = new ResponseModel<bool>() { Data = false, StatusCode = 500 };
             try
             {
                 var data = await _unitOfWork.GetRepository<Customer>().GetByIDAsync(id);
@@ -65,37 +65,37 @@ namespace SuperMarket.Persistence.Implementations.Services
                     if (rowsAffected > 0)
                     {
                         responseModel.Data = true;
-                        responseModel.Status = 200;
+                        responseModel.StatusCode = 200;
                     }
                 }
                 else
                 {
-                    responseModel.Status = 400;
+                    responseModel.StatusCode = 400;
                 }
             }
             catch (Exception ex)
             {
 
                 responseModel.Data = false;
-                responseModel.Status = 500;
+                responseModel.StatusCode = 500;
             }
             return responseModel;
         }
 
         public async Task<ResponseModel<List<CustomerGetDTO>>> GetAllCustomers()
         {
-            ResponseModel<List<CustomerGetDTO>> responseModel = new ResponseModel<List<CustomerGetDTO>>() { Data = null, Status = 500 };
+            ResponseModel<List<CustomerGetDTO>> responseModel = new ResponseModel<List<CustomerGetDTO>>() { Data = null, StatusCode = 500 };
             try
             {
                 var customers = await _unitOfWork.GetRepository<Customer>().GetAll().ToListAsync();//???
                 var customerDTOs = _mapper.Map<List<CustomerGetDTO>>(customers);
                 responseModel.Data = customerDTOs;
-                responseModel.Status = 200;
+                responseModel.StatusCode = 200;
             }
             catch (Exception ex)
             {
                 responseModel.Data = null;
-                responseModel.Status = 500;
+                responseModel.StatusCode = 500;
             }
             return responseModel;
         }
@@ -104,7 +104,7 @@ namespace SuperMarket.Persistence.Implementations.Services
             ResponseModel<CustomerGetDTO> responseModel = new ResponseModel<CustomerGetDTO>()
             {
                 Data = null,
-                Status = 400
+                StatusCode = 400
             };
             try
             {
@@ -113,22 +113,22 @@ namespace SuperMarket.Persistence.Implementations.Services
                 {
                     var customerDTOs = _mapper.Map<CustomerGetDTO>(data);
                     responseModel.Data = customerDTOs;
-                    responseModel.Status = 200;
+                    responseModel.StatusCode = 200;
                 }
                 else
                 {
-                    responseModel.Status = 500;
+                    responseModel.StatusCode = 500;
                 }
             }
             catch
             {
-                responseModel.Status = 500;
+                responseModel.StatusCode = 500;
             }
             return responseModel;
         }
             public async Task<ResponseModel<bool>> UpdateCustomer(CustomerUpdateDTO customerUpdateDTO, int id)
         {
-            ResponseModel<bool> responseModel = new ResponseModel<bool>() { Data = false, Status = 500 };
+            ResponseModel<bool> responseModel = new ResponseModel<bool>() { Data = false, StatusCode = 500 };
             try
             {
                 var data = await _unitOfWork.GetRepository<Customer>().GetByIDAsync(id);
@@ -139,19 +139,19 @@ namespace SuperMarket.Persistence.Implementations.Services
                     if (rowsAffected > 0)
                     {
                         responseModel.Data = true;
-                        responseModel.Status = 200;
+                        responseModel.StatusCode = 200;
                     }
                 }
                 else
                 {
-                    responseModel.Status = 400;
+                    responseModel.StatusCode = 400;
                 }
             }
             catch (Exception ex)
             {
 
                 responseModel.Data = false;
-                responseModel.Status = 500;
+                responseModel.StatusCode = 500;
             }
             return responseModel;
         }

@@ -1,5 +1,4 @@
-﻿using SuperMarket.Application.Interfaces.IRepositories.ICustomerRepos;
-using SuperMarket.Application.Interfaces.IRepositories.IOrderRepos;
+﻿using SuperMarket.Application.Interfaces.IRepositories.IOrderRepos;
 using SuperMarket.Domain.Entities;
 using SuperMarket.Persistence.Contexts;
 using System;

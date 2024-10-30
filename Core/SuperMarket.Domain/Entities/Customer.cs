@@ -1,4 +1,5 @@
 ﻿using SuperMarket.Domain.Entities.Common;
+using SuperMarket.Domain.Entities.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,7 @@ namespace SuperMarket.Domain.Entities
         public string Email { get; set; }
         public string Address { get; set; }
         public string UserId { get; set; }
+        public IList<Order>? Order { get; set; }
+        public AppUser AppUser { get; set; }
     }
 }
