@@ -35,7 +35,7 @@ namespace SuperMarket.API.Registrations
                 options.SwaggerDoc("V1", new OpenApiInfo
                 {
                     Version = "V1",
-                    Title = "WebApi",
+                    Title = "SupermarketWebApi",
                     Description = "SupermarketWebApi"
                 });
 

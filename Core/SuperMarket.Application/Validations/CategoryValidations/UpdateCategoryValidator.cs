@@ -12,7 +12,11 @@ namespace SuperMarket.Application.Validations.CategoryValidators
     {
         public UpdateCategoryValidator()
         {
-            
+            RuleFor(x => x.Name)
+                   .NotEmpty()
+                   .WithMessage("The Category Name cannot be empty.")
+                   .Length(0, 100)
+                   .WithMessage("The Category Name cannot be more than 100 characters.");
         }
     }
 }

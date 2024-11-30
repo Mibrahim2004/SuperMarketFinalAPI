@@ -68,7 +68,7 @@ namespace SuperMarket.Persistence.Implementations.Services
                 responseDTO.Succeeded = true;
 
                 responseModel.Data = responseDTO;
-                responseModel.StatusCode = 200;
+                responseModel.StatusCode = 201;
             }
             AppUser appUser = await _userManager.FindByNameAsync(model.UserName);
             if (appUser == null)
@@ -153,7 +153,7 @@ namespace SuperMarket.Persistence.Implementations.Services
             if (user != null)
             {
                 user.RefreshToken = refreshToken;
-                user.ExpiredTime = accessTokenDate;
+                user.ExpiredDate = accessTokenDate;
                 await _userManager.UpdateAsync(user);
             }
         }

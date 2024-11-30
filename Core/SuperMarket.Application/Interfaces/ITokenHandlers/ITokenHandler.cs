@@ -10,7 +10,7 @@ namespace SuperMarket.Application.Interfaces.ITokenHandlers
 {
     public interface ITokenHandler
     {
-        Task<TokenDTO> CreateToken(AppUser user);
+        Task<TokenDTO> CreateAccessToken(AppUser user);
         string CreateRefreshToken();
     }
 }

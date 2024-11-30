@@ -26,7 +26,7 @@ namespace SuperMarket.Infrastructure.Implementations.Services
         public string CreateRefreshToken()
         {
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(configuration["Token:RefreshTokenSecret"]);
+            var key = Encoding.ASCII.GetBytes(configuration["Token:RefreshTokenSecret"]);// Refresh token için gizli sifre
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
@@ -35,7 +35,7 @@ namespace SuperMarket.Infrastructure.Implementations.Services
             return tokenHandler.WriteToken(refreshToken);
         }
 
-        public async Task<TokenDTO> CreateToken(AppUser user)
+        public async Task<TokenDTO> CreateAccessToken(AppUser user)
         {
             TokenDTO tokenDTO = new TokenDTO();
             SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(configuration["Token:SecurityKey"]));

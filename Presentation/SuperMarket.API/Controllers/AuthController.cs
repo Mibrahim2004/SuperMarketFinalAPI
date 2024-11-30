@@ -42,9 +42,9 @@ namespace SuperMarket.API.Controllers
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
-        public async Task<IActionResult> PasswordResetAsync(string userNameorEmail, string currentpas, string newpas)
+        public async Task<IActionResult> PasswordResetAsync(string userNameorEmail, string currentpassword, string newpassword)
         {
-            var data = await _authService.PasswordResetAsync(userNameorEmail, currentpas, newpas);
+            var data = await _authService.PasswordResetAsync(userNameorEmail, currentpassword, newpassword);
             return StatusCode(data.StatusCode, data);
         }
     }

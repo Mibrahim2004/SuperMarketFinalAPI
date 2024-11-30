@@ -12,7 +12,7 @@ namespace SuperMarket.Domain.Entities
         public int CustomerId { get; set; }
         public int ProductId {  get; set; }
         public Customer Customer { get; set; }    
-        public IList< OrderDetails> OrderDetails { get; set; }
+        public IList<OrderDetails> OrderDetails { get; set; }
         public IList<Payment> Payment { get; set; }
         public DateTime OrderDate { get; set; }
         public int TotalAmount {  get; set; }

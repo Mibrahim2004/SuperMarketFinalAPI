@@ -45,7 +45,7 @@ namespace SuperMarket.Persistence.Implementations.Services
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 responseModel.StatusCode = 500;
             }

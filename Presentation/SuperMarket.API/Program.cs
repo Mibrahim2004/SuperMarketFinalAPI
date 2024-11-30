@@ -11,11 +11,20 @@ using System.Data;
 using Microsoft.Extensions.Logging;
 using Serilog.Core;
 using SuperMarket.Application.AutoMappers;
+using Serilog.Context;
+using System.Reflection;
+using System.ComponentModel.DataAnnotations;
+using SuperMarket.API.Extensions;
+using SuperMarket.API.Registrations;
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers() .AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<CreateUserValidator>());
+builder.Services.AddControllers();
+//.AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<CreateUserValidator>());
 //builder.Services.AddFluentValidationAutoValidation();
 //builder.Services.AddValidatorsFromAssemblyContaining<CreateUserValidator>();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateUserValidator>();
 
 // Add services to the container.
 
@@ -25,6 +34,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructureService();
 builder.Services.AddPersistenceService(builder.Configuration);
+builder.Services.AddPresentationServices(builder.Configuration);
+
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 Logger? log = new LoggerConfiguration()
     .WriteTo.Console()
@@ -56,12 +67,23 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/V1/swagger.json", "Supermarket API");
+    });
 }
 
 app.UseHttpsRedirection();
-
+app.ConfigureExceptionHandler();
+app.UseAuthentication();
 app.UseAuthorization();
+//logda db'ya user_name yazdirmaq ucun
+app.Use(async (context, next) =>
+{
+    var username = context.User?.Identity?.IsAuthenticated != null || true ? context.User.Identity.Name : null;
+    LogContext.PushProperty("User_Name", username);
+    await next();
+});
 
 app.MapControllers();
 

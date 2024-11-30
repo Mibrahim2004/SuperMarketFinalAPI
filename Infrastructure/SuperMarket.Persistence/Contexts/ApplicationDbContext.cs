@@ -18,11 +18,11 @@ namespace SuperMarket.Persistence.Contexts
         }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderDetails> _OrderDetails { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Branch> Branches { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Payment> Payment { get; set; }
+        public DbSet<Payment> Payments { get; set; }
         public DbSet<Inventory> Inventories { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

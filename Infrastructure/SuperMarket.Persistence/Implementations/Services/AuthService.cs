@@ -20,11 +20,8 @@ namespace SuperMarket.Persistence.Implementations.Services
         readonly SignInManager<AppUser> _signInManager;
         readonly ITokenHandler _tokenHandler;
         readonly IUserService _userService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public AuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-            ITokenHandler tokenHandler, IUserService userService, IHttpContextAccessor httpContextAccessor = null)
+         public AuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenHandler tokenHandler, IUserService userService)
         {
-            _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenHandler = tokenHandler;
@@ -48,10 +45,10 @@ namespace SuperMarket.Persistence.Implementations.Services
                 {
                     responseModel.StatusCode= 500;
                 }
-                SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
+                SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, password, false);//bir nece defe sehv giris bas vererse, hesabi kilidlememek ucun bu parametri false edirik.
                 if (result.Succeeded)
                 {
-                    TokenDTO tokenDTO = await _tokenHandler.CreateToken(user);
+                    TokenDTO tokenDTO = await _tokenHandler.CreateAccessToken(user);
                     await _userService.UpdateRefreshToken(tokenDTO.RefreshToken, user, tokenDTO.ExpirationTime);
                     responseModel.Data = tokenDTO;
                     responseModel.StatusCode = 200;
@@ -80,7 +77,7 @@ namespace SuperMarket.Persistence.Implementations.Services
                 AppUser? user = await _userManager.Users.FirstOrDefaultAsync(x => x.RefreshToken == refreshToken);
                 if (user != null && user?.ExpiredTime > DateTime.UtcNow)
                 {
-                    TokenDTO tokenDTO = await _tokenHandler.CreateToken(user);
+                    TokenDTO tokenDTO = await _tokenHandler.CreateAccessToken(user);
                     await _userService.UpdateRefreshToken(tokenDTO.RefreshToken, user, tokenDTO.ExpirationTime);
                     responseModel.Data = tokenDTO;
                     responseModel.StatusCode = 200;
@@ -134,7 +131,7 @@ namespace SuperMarket.Persistence.Implementations.Services
             return responseModel;
         }
 
-        public async Task<ResponseModel<bool>> PasswordResetAsync(string userNameorEmail, string currentpas, string newpas)
+        public async Task<ResponseModel<bool>> PasswordResetAsync(string userNameorEmail, string currentpassword, string newpassword)
         {
             ResponseModel<bool> responseModel = new ResponseModel<bool>
             {
@@ -150,7 +147,7 @@ namespace SuperMarket.Persistence.Implementations.Services
                 }
                 else
                 {
-                    var data = await _userManager.ChangePasswordAsync(user, currentpas, newpas);
+                    var data = await _userManager.ChangePasswordAsync(user, currentpassword, newpassword);
                     if (data.Succeeded)
                     {
                         responseModel.Data = true;
