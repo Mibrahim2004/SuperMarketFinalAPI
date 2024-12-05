@@ -6,7 +6,7 @@ using SuperMarket.Application.Interfaces.IServices;
 
 namespace SuperMarket.API.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -16,35 +16,35 @@ namespace SuperMarket.API.Controllers
             _authService = authService;
         }
 
-        [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
+        [HttpPost("[action]")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
         public async Task<IActionResult> LoginAsync(string userNameOrEmail, string password)
         {
             var data = await _authService.LoginAsync(userNameOrEmail, password);
             return StatusCode(data.StatusCode, data);
         }
 
-        [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
+        [HttpPost("[action]")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
         public async Task<IActionResult> LoginWithRefreshTokenAsync(string refreshToken)
         {
             var data = await _authService.LoginWithRefreshTokenAsync(refreshToken);
             return StatusCode(data.StatusCode, data);
         }
 
-        [HttpPut]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
-        public async Task<IActionResult> LogOut(string userNameorEmail)
+        [HttpPut("[action]")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
+        public async Task<IActionResult> LogOut(string userNameOrEmail)
         {
-            var data = await _authService.LogOut(userNameorEmail);
+            var data = await _authService.LogOut(userNameOrEmail);
             return StatusCode(data.StatusCode, data);
         }
 
-        [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
-        public async Task<IActionResult> PasswordResetAsync(string userNameorEmail, string currentpassword, string newpassword)
+        [HttpPost("[action]")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
+        public async Task<IActionResult> PasswordResetAsync(string userNameOrEmail, string currentpassword, string newpassword)
         {
-            var data = await _authService.PasswordResetAsync(userNameorEmail, currentpassword, newpassword);
+            var data = await _authService.PasswordResetAsync(userNameOrEmail, currentpassword, newpassword);
             return StatusCode(data.StatusCode, data);
         }
     }

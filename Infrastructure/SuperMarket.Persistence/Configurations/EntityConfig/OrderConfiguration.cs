@@ -16,7 +16,6 @@ namespace SuperMarket.Persistence.Configurations.EntityConfig
             builder.HasKey(o => o.Id);
 
             builder.Property(o => o.CustomerId).IsRequired();
-            builder.Property(o => o.ProductId).IsRequired();
             builder.Property(o => o.OrderDate).IsRequired();
             builder.Property(o => o.TotalAmount).IsRequired().HasColumnType("decimal(18,2)");
 

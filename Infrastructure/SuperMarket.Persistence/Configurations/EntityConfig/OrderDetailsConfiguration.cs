@@ -15,6 +15,12 @@ namespace SuperMarket.Persistence.Configurations.EntityConfig
         {
             builder.HasKey(od => od.Id);
 
+            builder.Property(o => o.OrderId).IsRequired();
+            builder.Property(o => o.ProductId).IsRequired();
+            builder.Property(o => o.Quantity).IsRequired();
+            builder.Property(o => o.Price).IsRequired().HasColumnType("decimal(18,2)");
+
+
             builder.HasOne(od => od.Order)
                    .WithMany(o => o.OrderDetails)
                    .HasForeignKey(od => od.OrderId)

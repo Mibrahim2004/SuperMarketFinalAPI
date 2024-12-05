@@ -7,7 +7,7 @@ using SuperMarket.Application.Interfaces.IServices;
 
 namespace SuperMarket.API.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -44,14 +44,14 @@ namespace SuperMarket.API.Controllers
             var response = await _userService.UpdateUserAsync(model);
             return StatusCode(response.StatusCode, response);
         }
-        [HttpGet]
+        [HttpGet("{id}")]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> GetRolesToUser(string userIdOrName)
         {
             var response = await _userService.GetRolesToUserAsync(userIdOrName);
             return StatusCode(response.StatusCode, response);
         }
-        [HttpPost]
+        [HttpPost("assign-role-to-user")]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> AssignRoleToUser(string userId, string[] roles)
         {

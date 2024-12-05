@@ -12,7 +12,7 @@ namespace SuperMarket.Persistence.Contexts
 {
    public class ApplicationDbContext  : IdentityDbContext<AppUser, AppRole, string>
     {
-        public ApplicationDbContext(DbContextOptions options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
         }

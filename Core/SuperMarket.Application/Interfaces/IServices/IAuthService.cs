@@ -13,6 +13,6 @@ namespace SuperMarket.Application.Interfaces.IServices
         Task<ResponseModel<TokenDTO>> LoginAsync(string userNameOrEmail, string password);
         Task<ResponseModel<TokenDTO>> LoginWithRefreshTokenAsync(string refreshToken);
         Task<ResponseModel<bool>> LogOut(string userNameOrEmail);
-        Task<ResponseModel<bool>> PasswordResetAsync(string userNameorEmail, string currentpassword, string newpassword);
+        Task<ResponseModel<bool>> PasswordResetAsync(string userNameOrEmail, string currentpassword, string newpassword);
     }
 }

@@ -7,7 +7,7 @@ using SuperMarket.Application.Interfaces.IServices;
 
 namespace SuperMarket.API.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class CustomerController : ControllerBase
     {
@@ -16,6 +16,7 @@ namespace SuperMarket.API.Controllers
         {
             _customerService = customerService;
         }
+
         [HttpGet]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> GetAll()
@@ -23,7 +24,7 @@ namespace SuperMarket.API.Controllers
             var response = await _customerService.GetAllCustomers();
             return StatusCode(response.StatusCode, response);
         }
-        [HttpGet]
+        [HttpGet("{id}")]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
         public async Task<IActionResult> GetById(int id)
         {

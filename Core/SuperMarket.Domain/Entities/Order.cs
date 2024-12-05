@@ -10,7 +10,6 @@ namespace SuperMarket.Domain.Entities
     public class Order : BaseEntity
     {
         public int CustomerId { get; set; }
-        public int ProductId {  get; set; }
         public Customer Customer { get; set; }    
         public IList<OrderDetails> OrderDetails { get; set; }
         public IList<Payment> Payment { get; set; }

@@ -60,7 +60,10 @@ Logger? log = new LoggerConfiguration()
     .CreateLogger();
 Log.Logger = log;
 builder.Host.UseSerilog(log);
-
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

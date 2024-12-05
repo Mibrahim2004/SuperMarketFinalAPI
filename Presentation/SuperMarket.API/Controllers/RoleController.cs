@@ -6,7 +6,7 @@ using SuperMarket.Application.Interfaces.IServices;
 
 namespace SuperMarket.API.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class RoleController : ControllerBase

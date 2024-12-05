@@ -10,7 +10,6 @@ namespace SuperMarket.Application.DTOs.OrderDTOs
     {
         public int Id {  get; set; }
         public int CustomerId { get; set; }
-        public int ProductId { get; set; }
         public DateTime OrderDate { get; set; }
         public int TotalAmount { get; set; }
     }
