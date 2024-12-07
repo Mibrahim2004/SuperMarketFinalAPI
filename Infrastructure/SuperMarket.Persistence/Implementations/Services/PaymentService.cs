@@ -5,6 +5,7 @@ using SuperMarket.Application.Interfaces.IServices;
 using SuperMarket.Application.Interfaces.IUnitOfWorks;
 using SuperMarket.Application.Models;
 using SuperMarket.Domain.Entities;
+using SuperMarket.Persistence.Implementations.UnitOfWorks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -150,6 +151,35 @@ namespace SuperMarket.Persistence.Implementations.Services
             {
 
                 responseModel.Data = false;
+                responseModel.StatusCode = 500;
+            }
+            return responseModel;
+        }
+        public async Task<ResponseModel<PaymentGetDTO>> MaximumPayment()
+        {
+            ResponseModel<PaymentGetDTO> responseModel = new ResponseModel<PaymentGetDTO>()
+            {
+                Data = null,
+                StatusCode = 400
+            };
+            try
+            {
+                var maxpayment = await _unitOfWork.GetRepository<Payment>().GetAll().MaxAsync(x => x.Amount);
+                var payment = await _unitOfWork.GetRepository<Payment>().GetAll().FirstOrDefaultAsync(x =>
+                x.Amount == maxpayment);
+                if (payment != null)
+                {
+                    var paymentdto = _mapper.Map<PaymentGetDTO>(payment);
+                    responseModel.Data = paymentdto;
+                    responseModel.StatusCode = 200;
+                }
+                else
+                {
+                    responseModel.StatusCode = 404;
+                }
+            }
+            catch
+            {
                 responseModel.StatusCode = 500;
             }
             return responseModel;

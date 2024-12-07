@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SuperMarket.Application.DTOs.PaymentDTOs;
 using SuperMarket.Application.Interfaces.IServices;
+using SuperMarket.Persistence.Implementations.Services;
 
 namespace SuperMarket.API.Controllers
 {
@@ -49,6 +50,13 @@ namespace SuperMarket.API.Controllers
         public async Task<IActionResult> Update(PaymentUpdateDTO updatePaymentDTO, int id)
         {
             var response = await _paymentService.UpdatePayment(updatePaymentDTO, id);
+            return StatusCode(response.StatusCode, response);
+        }
+        [HttpGet("maximum payment")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
+        public async Task<IActionResult> MaximumPayment()
+        {
+            var response = await _paymentService.MaximumPayment();
             return StatusCode(response.StatusCode, response);
         }
     }

@@ -51,5 +51,11 @@ namespace SuperMarket.API.Controllers
             var response = await _productService.UpdateProduct(updateProductDTO, id);
             return StatusCode(response.StatusCode, response);
         }
+        [HttpGet("most expensive products")]
+        public async Task<IActionResult> MostExpensiveProducts()
+        {
+            var response = await _productService.MostExpensiveProducts();
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }

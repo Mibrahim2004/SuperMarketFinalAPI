@@ -38,7 +38,7 @@ namespace SuperMarket.Infrastructure.Implementations.Services
             var roles = await userManager.GetRolesAsync(user);
             claims.AddRange(roles.Select(role => (new Claim(ClaimTypes.Role, role))));
 
-            tokenDTO.ExpirationTime = DateTime.UtcNow.AddMinutes(1);
+            tokenDTO.ExpirationTime = DateTime.UtcNow.AddMinutes(20);
             JwtSecurityToken securityToken = new JwtSecurityToken(
                 audience: configuration["Token:Audience"],
                 issuer: configuration["Token:Issuer"],

@@ -15,5 +15,6 @@ namespace SuperMarket.Application.Interfaces.IServices
         Task<ResponseModel<ProductCreateDTO>> CreateProduct(ProductCreateDTO productCreateDTO);
         Task<ResponseModel<bool>> UpdateProduct(ProductUpdateDTO productUpdateDTO, int id);
         Task<ResponseModel<bool>> DeleteProduct(int id);
+        Task<ResponseModel<List<ProductGetDTO>>> MostExpensiveProducts();
     }
 }

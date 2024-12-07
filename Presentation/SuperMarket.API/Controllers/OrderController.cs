@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SuperMarket.Application.DTOs.OrderDTOs;
 using SuperMarket.Application.Interfaces.IServices;
+using SuperMarket.Persistence.Implementations.Services;
 
 namespace SuperMarket.API.Controllers
 {
@@ -49,6 +50,12 @@ namespace SuperMarket.API.Controllers
         public async Task<IActionResult> Update(OrderUpdateDTO updateOrderDTO, int id)
         {
             var response = await _orderService.UpdateOrder(updateOrderDTO, id);
+            return StatusCode(response.StatusCode, response);
+        }
+        [HttpGet("get-top-price-orders")]
+        public async Task<IActionResult> TopOrders()
+        {
+            var response = await _orderService.GetTopPriceOrders();
             return StatusCode(response.StatusCode, response);
         }
     }

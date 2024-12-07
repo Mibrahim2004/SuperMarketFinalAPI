@@ -5,6 +5,7 @@ using SuperMarket.Application.Interfaces.IServices;
 using SuperMarket.Application.Interfaces.IUnitOfWorks;
 using SuperMarket.Application.Models;
 using SuperMarket.Domain.Entities;
+using SuperMarket.Persistence.Implementations.UnitOfWorks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -150,6 +151,27 @@ namespace SuperMarket.Persistence.Implementations.Services
             {
 
                 responseModel.Data = false;
+                responseModel.StatusCode = 500;
+            }
+            return responseModel;
+        }
+        public async Task<ResponseModel<List<ProductGetDTO>>> MostExpensiveProducts()
+        {
+            ResponseModel<List<ProductGetDTO>> responseModel = new ResponseModel<List<ProductGetDTO>>()
+            {
+                Data = null,
+                StatusCode = 400
+            };
+            try
+            {
+                var products = await _unitOfWork.GetRepository<Product>().GetAll().OrderByDescending(x => x.Price)
+                    .ToListAsync();
+                var productsdto = _mapper.Map<List<ProductGetDTO>>(products);
+                responseModel.Data = productsdto;
+                responseModel.StatusCode = 200;
+            }
+            catch
+            {
                 responseModel.StatusCode = 500;
             }
             return responseModel;

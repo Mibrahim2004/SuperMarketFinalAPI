@@ -15,5 +15,6 @@ namespace SuperMarket.Application.Interfaces.IServices
         Task<ResponseModel<PaymentCreateDTO>> CreatePayment(PaymentCreateDTO paymentCreateDTO);
         Task<ResponseModel<bool>> UpdatePayment(PaymentUpdateDTO paymentUpdateDTO, int id);
         Task<ResponseModel<bool>> DeletePayment(int id);
+        Task<ResponseModel<PaymentGetDTO>> MaximumPayment();
     }
 }
