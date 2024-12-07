@@ -26,11 +26,14 @@ namespace SuperMarket.Persistence.Configurations.EntityConfig
                 .HasMaxLength(50); 
 
             builder.Property(a => a.RefreshToken)
-                .HasMaxLength(150); 
+                .HasMaxLength(250); 
 
             builder.Property(a => a.ExpiredDate)
                 .IsRequired();
-     
+
+            builder.Property(a => a.RefreshTokenEndTime)
+              .IsRequired(); 
+
             // Configure the relationship with Customers
             builder.HasMany(a => a.Customer)
                 .WithOne(c => c.AppUser)

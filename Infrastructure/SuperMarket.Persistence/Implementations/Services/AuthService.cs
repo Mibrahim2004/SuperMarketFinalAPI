@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-//using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using SuperMarket.Application.DTOs.TokenDTOs;
 using SuperMarket.Application.Interfaces.IServices;
 using SuperMarket.Application.Interfaces.ITokenHandlers;
@@ -22,76 +22,41 @@ namespace SuperMarket.Persistence.Implementations.Services
         readonly SignInManager<AppUser> _signInManager;
         readonly ITokenHandler _tokenHandler;
         readonly IUserService _userService;
-        //readonly IConfiguration _configuration;
-        public AuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenHandler tokenHandler, IUserService userService /*IConfiguration configuration*/)
+        readonly IConfiguration _configuration;
+        public AuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenHandler tokenHandler, IUserService userService, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenHandler = tokenHandler;
             _userService = userService;
-            //_configuration = configuration;
+            _configuration = configuration;
         }
         public async Task<ResponseModel<TokenDTO>> LoginAsync(string userNameOrEmail, string password)
         {
-            ResponseModel<TokenDTO> responseModel = new ResponseModel<TokenDTO>()
+            ResponseModel<TokenDTO> responseModel = new()
+            { Data = null, StatusCode = 400 };
+            var user = await _userManager.FindByNameAsync(userNameOrEmail);
+            if (user == null)
             {
-                Data = null,
-                StatusCode = 400
-            };
-            try
-            {
-                AppUser user = await _userManager.FindByNameAsync(userNameOrEmail);
-                if (user == null)
-                {
-                    user = await _userManager.FindByEmailAsync(userNameOrEmail);
-                }
-                else
-                {
-                    responseModel.StatusCode = 500;
-                }
-                SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, password, false);//bir nece defe sehv giris bas vererse, hesabi kilidlememek ucun bu parametri false edirik.
-                if (result.Succeeded)
-                {
-                    TokenDTO tokenDTO = await _tokenHandler.CreateAccessToken(user);
-                    await _userService.UpdateRefreshToken(tokenDTO.RefreshToken, user, tokenDTO.ExpirationTime);
-                    responseModel.Data = tokenDTO;
-                    responseModel.StatusCode = 200;
-                }
-                else
-                {
-                    responseModel.StatusCode = 401;
-                }
+                responseModel.StatusCode = 404;
+                return responseModel;
             }
-            catch
+            SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, password, false);//bir nece defe sehv giris bas vererse, hesabi locklamamaq ucun bu parametri false edirik
+            if (result.Succeeded)
             {
-                responseModel.StatusCode = 500;
+                TokenDTO tokenDTO = await _tokenHandler.CreateAccessToken(user);
+                var minsString = _configuration["Token:RefreshTokenExpirationInMinutes"];
+                var mins = Convert.ToDouble(minsString);
+                await _userService.UpdateRefreshToken(tokenDTO.RefreshToken, user, tokenDTO.ExpirationTime.AddMinutes(mins));
+                responseModel.Data = tokenDTO;
+                responseModel.StatusCode = 200;
+            }
+            else
+            {
+                responseModel.StatusCode = 401;
             }
             return responseModel;
         }
-            //ResponseModel<TokenDTO> responseModel = new()
-            //{ Data = null, StatusCode = 400 };
-            //var user = await _userManager.FindByNameAsync(userNameOrEmail);
-            //if (user == null)
-            //{
-            //    responseModel.StatusCode = 404;
-            //    return responseModel;
-            //}
-            //SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, password, false);//bir nece defe sehv giris bas vererse, hesabi locklamamaq ucun bu parametri false edirik
-            //if (result.Succeeded)
-            //{
-            //    TokenDTO tokenDTO = await _tokenHandler.CreateAccessToken(user);           
-            //    var minsString = _configuration["Token:RefreshTokenExpirationInMinutes"];
-            //    var mins = Convert.ToDouble(minsString);
-            //    await _userService.UpdateRefreshToken(tokenDTO.RefreshToken, user, tokenDTO.ExpirationTime.AddMinutes(mins));
-            //    responseModel.Data = tokenDTO;
-            //    responseModel.StatusCode = 200;
-            //}
-            //else
-            //{
-            //    responseModel.StatusCode = 401;
-            //}
-            //return responseModel;
-
         public async Task<ResponseModel<TokenDTO>> LoginWithRefreshTokenAsync(string refreshToken)
         {
             ResponseModel<TokenDTO> responseModel = new ResponseModel<TokenDTO>()
@@ -102,7 +67,7 @@ namespace SuperMarket.Persistence.Implementations.Services
             try
             {
                 AppUser? user = await _userManager.Users.FirstOrDefaultAsync(x => x.RefreshToken == refreshToken);
-                if (user != null && user?.ExpiredDate > DateTime.UtcNow)
+                if (user != null && user?.RefreshTokenEndTime > DateTime.UtcNow)
                 {
                     TokenDTO tokenDTO = await _tokenHandler.CreateAccessToken(user);
                     await _userService.UpdateRefreshToken(tokenDTO.RefreshToken, user, tokenDTO.ExpirationTime);

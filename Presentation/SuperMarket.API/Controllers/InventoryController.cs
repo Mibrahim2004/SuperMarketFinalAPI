@@ -17,28 +17,28 @@ namespace SuperMarket.API.Controllers
             _inventoryService = inventoryService;
         }
         [HttpGet]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             var response = await _inventoryService.GetAllInventories();
             return StatusCode(response.StatusCode, response);
         }
         [HttpGet("{id}")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
         public async Task<IActionResult> GetById(int id)
         {
             var response = await _inventoryService.GetInventoryById(id);
             return StatusCode(response.StatusCode, response);
         }
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
         public async Task<IActionResult> Create(InventoryCreateDTO createInventoryDTO)
         {
             var response = await _inventoryService.CreateInventory(createInventoryDTO);
             return StatusCode(response.StatusCode, response);
         }
         [HttpDelete]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
         public async Task<IActionResult> Delete(int id)
         {
             var response = await _inventoryService.DeleteInventory(id);
@@ -46,7 +46,7 @@ namespace SuperMarket.API.Controllers
         }
 
         [HttpPut]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
         public async Task<IActionResult> Update(InventoryUpdateDTO updateInventoryDTO, int id)
         {
             var response = await _inventoryService.UpdateInventory(updateInventoryDTO, id);
